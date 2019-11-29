@@ -1,3 +1,4 @@
+
 from algorithm import DiskParameter
 
 
@@ -51,7 +52,37 @@ class diskOptimization:
         return sstf
 
     def scan(self, curr, seq):
-        direction = RIGHT
+        temp = seq[:]
+        scan = []
+        num = curr
+        abc = self.dp.getPrevious()
+        ghi = self.dp.getCylinders() - 1
+        jkl = 0
+        for i in temp:
+            num = i
+            scan.append(num)
+            if abc < curr:
+                scan.sort()
+                scan.append(ghi)
+
+            else:
+                scan.sort(reverse=True)
+                scan.append(jkl)
+        return scan
+
+    def arrangelook(self, curr, seq):
+        temp = seq[:]
+        look = []
+        num = curr
+        abc = self.dp.getPrevious()
+        for i in temp:
+            num = i
+            if abc < curr:
+                look.sort()
+            else:
+                look.sort(reverse=True)
+            look.append(num)
+        return look
 
 
     def generateFCFS(self):
@@ -66,7 +97,7 @@ class diskOptimization:
     def generateScan(self):
         seq = self.dp.getSequence()
         curr = self.dp.getCurrent()
-        self.printSequence("Scan", self.arrangeScan(curr, seq))
+        self.printSequence("Scan", self.scan(curr, seq))
 
     def generatelook(self):
         seq = self.dp.getSequence()
@@ -78,3 +109,4 @@ class diskOptimization:
         self.generateSSTF()
         self.generateScan()
         self.generatelook()
+
