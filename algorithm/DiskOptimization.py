@@ -59,18 +59,18 @@ class diskOptimization:
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
-        additional = self.dp.getCylinders() - 1
+        additional = [self.dp.getCylinders() - 1]
         dist = 0
         scan = []
         if same:
             for track in same:
                 scan.append(track)
         order = []
-        if bigger and smaller:
+        if bigger and smaller and additional:
             if curr > self.dp.getPrevious():
-                order = [bigger, smaller]
+                order = [bigger, additional, smaller]
             else:
-                order = [smaller,  bigger]
+                order = [smaller, additional, bigger]
         elif bigger and not smaller:
             order = [bigger]
         elif smaller and not bigger:
