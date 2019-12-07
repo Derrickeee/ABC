@@ -55,15 +55,15 @@ class diskOptimization:
     def arrangescan(self, curr, seq):
         temp = seq[:]
         bigger = [track for track in temp if track > curr]
-        same = [track for track in temp if track == curr]
+        identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
         additional = [self.dp.getCylinders() - 1]
         dist = 0
         scan = []
-        if same:
-            for track in same:
+        if identical:
+            for track in identical:
                 scan.append(track)
         order = []
         if bigger and smaller and additional:
@@ -89,14 +89,14 @@ class diskOptimization:
     def arrangelook(self, curr, seq):
         temp = seq[:]
         bigger = [track for track in temp if track > curr]
-        same = [track for track in temp if track == curr]
+        identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
         dist = 0
         look = []
-        if same:
-            for track in same:
+        if identical:
+            for track in identical:
                 look.append(track)
         order = []
         if bigger and smaller:
@@ -118,14 +118,14 @@ class diskOptimization:
     def arrangeclook(self, curr, seq):
         temp = seq[:]
         bigger = [track for track in temp if track > curr]
-        same = [track for track in temp if track == curr]
+        identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller)
         dist = 0
         clook = []
-        if same:
-            for track in same:
+        if identical:
+            for track in identical:
                 clook.append(track)
         order = []
         if bigger and smaller:
