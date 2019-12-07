@@ -72,15 +72,14 @@ class diskOptimization:
                 additional = [0]
                 order = [smaller, additional, bigger]
         elif bigger and not smaller:
-            order = [bigger]
+            order = [bigger, additional]
         elif smaller and not bigger:
-            order = [smaller]
+            additional = [0]
+            order = [smaller, additional]
         for sublist in order:
             for nextTrack in sublist:
                 scan.append(nextTrack)
         return scan
-
-
 
 
     def arrangelook(self, curr, seq):
