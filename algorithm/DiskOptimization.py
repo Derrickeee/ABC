@@ -1,5 +1,6 @@
 from algorithm import DiskParameter
 
+
 class diskOptimization:
     def __init__(self):
         self.dp = DiskParameter.DiskParameter("diskq1.ini")
@@ -35,16 +36,16 @@ class diskOptimization:
         temp = seq[:]
         sstf = []
         temp2 = temp[:]
+
         num = curr
         for i in temp:
             minimum = max(seq)
             num2 = num
             for ii in temp2:
                 dist = abs(num2 - ii)
-
                 if dist < minimum:
                     num = ii
-                    minimum = dist  
+                    minimum = dist
             temp2.remove(num)
             sstf.append(num)
         return sstf
@@ -59,17 +60,17 @@ class diskOptimization:
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
         additional = self.dp.getCylinders() - 1
-        distance = 0
+        dist = 0
         scan = []
         if same:
             for track in same:
                 scan.append(track)
         order = []
         if bigger and smaller:
-            if curr < self.dp.getPrevious():
+            if curr > self.dp.getPrevious():
                 order = [bigger, smaller]
             else:
-                order = [smaller, bigger]
+                order = [smaller,  bigger]
         elif bigger and not smaller:
             order = [bigger]
         elif smaller and not bigger:
@@ -77,7 +78,7 @@ class diskOptimization:
         for sublist in order:
             for nextTrack in sublist:
                 scan.append(nextTrack)
-                distance += abs(curr - nextTrack)
+                dist += abs(curr - nextTrack)
                 curr = nextTrack
         return scan
 
@@ -91,14 +92,14 @@ class diskOptimization:
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
-        distance = 0
+        dist = 0
         look = []
         if same:
             for track in same:
                 look.append(track)
         order = []
         if bigger and smaller:
-            if curr < self.dp.getPrevious():
+            if curr > self.dp.getPrevious():
                 order = [bigger, smaller]
             else:
                 order = [smaller, bigger]
@@ -109,9 +110,35 @@ class diskOptimization:
         for sublist in order:
             for nextTrack in sublist:
                 look.append(nextTrack)
-                distance += abs(curr - nextTrack)
+                dist += abs(curr - nextTrack)
                 curr = nextTrack
         return look
+
+    def arrangeclook(self, curr, seq):
+        temp = seq[:]
+        bigger = [track for track in temp if track > curr]
+        same = [track for track in temp if track == curr]
+        smaller = [track for track in temp if track < curr]
+        bigger = sorted(bigger)
+        smaller = sorted(smaller)
+        dist = 0
+        clook = []
+        if same:
+            for track in same:
+                clook.append(track)
+        order = []
+        if bigger and smaller:
+            order = [bigger, smaller]
+        elif bigger and not smaller:
+            order = [bigger]
+        elif smaller and not bigger:
+            order = [smaller]
+        for sublist in order:
+            for nextTrack in sublist:
+                clook.append(nextTrack)
+                dist += abs(curr - nextTrack)
+                curr = nextTrack
+        return clook
 
     def generateFCFS(self):
         seq = self.dp.getSequence()
@@ -133,9 +160,14 @@ class diskOptimization:
         curr = self.dp.getCurrent()
         self.printSequence("Look", self.arrangelook(curr, seq))
 
+    def generateclook(self):
+        seq = self.dp.getSequence()
+        curr = self.dp.getCurrent()
+        self.printSequence("C-Look", self.arrangeclook(curr, seq))
+
     def generateAnalysis(self):
         self.generateFCFS()
         self.generateSSTF()
         self.generateScan()
         self.generatelook()
-
+        self.generateclook()
