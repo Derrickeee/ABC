@@ -60,7 +60,6 @@ class diskOptimization:
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
         additional = [self.dp.getCylinders() - 1]
-        dist = 0
         scan = []
         if identical:
             for track in identical:
@@ -91,7 +90,6 @@ class diskOptimization:
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
-        dist = 0
         look = []
         if identical:
             for track in identical:
@@ -118,7 +116,6 @@ class diskOptimization:
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller)
-        dist = 0
         clook = []
         if identical:
             for track in identical:
