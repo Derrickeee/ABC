@@ -9,6 +9,10 @@ class DiskParameter:
         self.previous = Config.getint('diskq1', 'previous')
         self.current = Config.getint('diskq1', 'current')
         self.sequence = Config.get('diskq1', 'sequence')
+        # self.cylinders = Config.getint('diskq2', 'cylinders')
+        # self.previous = Config.getint('diskq2', 'previous')
+        # self.current = Config.getint('diskq2', 'current')
+        # self.sequence = Config.get('diskq2', 'sequence')
         self.sequence = self.sequence.split(",")
         seq = []
         for i in self.sequence:
