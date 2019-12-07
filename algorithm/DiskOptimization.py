@@ -1,12 +1,11 @@
-
 from algorithm import DiskParameter
 
 
 class diskOptimization:
     def __init__(self):
         self.dp = DiskParameter.DiskParameter("diskq1.ini")
+        # self.dp = DiskParameter.DiskParameter("diskq2.ini")
         self.generateAnalysis()
-
 
     def printSequence(self, name, location):
         curr = 0
@@ -25,6 +24,7 @@ class diskOptimization:
 
         working1 = working1[0:-1]
         working2 = working2[0:-1]
+        #First Come First Served Order
         order = str(self.dp.getCurrent()) + ", " + str(location)[1:-1]
         print(name + "\n====")
         print("Order of Access: " + order)
@@ -51,39 +51,72 @@ class diskOptimization:
             sstf.append(num)
         return sstf
 
-    def scan(self, curr, seq):
-        temp = seq[:]
-        scan = []
-        num = curr
-        abc = self.dp.getPrevious()
-        ghi = self.dp.getCylinders() - 1
-        jkl = 0
-        for i in temp:
-            num = i
-            scan.append(num)
-            if abc < curr:
-                scan.sort()
-                scan.append(ghi)
 
+
+    def arrangescan(self, curr, seq):
+        temp = seq[:]
+        bigger = [track for track in temp if track > curr]
+        same = [track for track in temp if track == curr]
+        smaller = [track for track in temp if track < curr]
+        bigger = sorted(bigger)
+        smaller = sorted(smaller, reverse=True)
+        additional = self.dp.getCylinders() - 1
+        distance = 0
+        scan = []
+        if same:
+            for track in same:
+                scan.append(track)
+        order = []
+        if bigger and smaller:
+            if curr < self.dp.getPrevious():
+                order = [smaller, bigger]
             else:
-                scan.sort(reverse=True)
-                scan.append(jkl)
+                order = [bigger, smaller]
+        elif bigger and not smaller:
+            order = [bigger]
+        elif smaller and not bigger:
+            order = [smaller]
+        for sublist in order:
+            for nextTrack in sublist:
+                scan.append(nextTrack)
+                distance += abs(curr - nextTrack)
+                curr = nextTrack
         return scan
+
+
+
 
     def arrangelook(self, curr, seq):
         temp = seq[:]
+        bigger = [track for track in temp if track > curr]
+        same = [track for track in temp if track == curr]
+        smaller = [track for track in temp if track < curr]
+        bigger = sorted(bigger)
+        smaller = sorted(smaller, reverse=True)
+        print(bigger)
+        print(smaller)
+        print(curr)
+        distance = 0
         look = []
-        num = curr
-        abc = self.dp.getPrevious()
-        for i in temp:
-            num = i
-            if abc < curr:
-                look.sort()
+        if same:
+            for track in same:
+                look.append(track)
+        order = []
+        if bigger and smaller:
+            if curr < self.dp.getPrevious():
+                order = [smaller, bigger]
             else:
-                look.sort(reverse=True)
-            look.append(num)
+                order = [bigger, smaller]
+        elif bigger and not smaller:
+            order = [bigger]
+        elif smaller and not bigger:
+            order = [smaller]
+        for sublist in order:
+            for nextTrack in sublist:
+                look.append(nextTrack)
+                distance += abs(curr - nextTrack)
+                curr = nextTrack
         return look
-
 
     def generateFCFS(self):
         seq = self.dp.getSequence()
@@ -97,7 +130,8 @@ class diskOptimization:
     def generateScan(self):
         seq = self.dp.getSequence()
         curr = self.dp.getCurrent()
-        self.printSequence("Scan", self.scan(curr, seq))
+        self.printSequence("Scan", self.arrangescan(curr, seq))
+
 
     def generatelook(self):
         seq = self.dp.getSequence()
@@ -109,4 +143,3 @@ class diskOptimization:
         self.generateSSTF()
         self.generateScan()
         self.generatelook()
-
