@@ -1,6 +1,5 @@
 from algorithm import DiskParameter
 
-
 class diskOptimization:
     def __init__(self):
         self.dp = DiskParameter.DiskParameter("diskq1.ini")
@@ -36,7 +35,6 @@ class diskOptimization:
         temp = seq[:]
         sstf = []
         temp2 = temp[:]
-
         num = curr
         for i in temp:
             minimum = max(seq)
@@ -46,7 +44,7 @@ class diskOptimization:
 
                 if dist < minimum:
                     num = ii
-                    minimum = dist  # print("*here")       # print("--------------STOP " + str(num) + "---------------")
+                    minimum = dist  
             temp2.remove(num)
             sstf.append(num)
         return sstf
@@ -69,9 +67,9 @@ class diskOptimization:
         order = []
         if bigger and smaller:
             if curr < self.dp.getPrevious():
-                order = [smaller, bigger]
-            else:
                 order = [bigger, smaller]
+            else:
+                order = [smaller, bigger]
         elif bigger and not smaller:
             order = [bigger]
         elif smaller and not bigger:
@@ -93,9 +91,6 @@ class diskOptimization:
         smaller = [track for track in temp if track < curr]
         bigger = sorted(bigger)
         smaller = sorted(smaller, reverse=True)
-        print(bigger)
-        print(smaller)
-        print(curr)
         distance = 0
         look = []
         if same:
@@ -104,9 +99,9 @@ class diskOptimization:
         order = []
         if bigger and smaller:
             if curr < self.dp.getPrevious():
-                order = [smaller, bigger]
-            else:
                 order = [bigger, smaller]
+            else:
+                order = [smaller, bigger]
         elif bigger and not smaller:
             order = [bigger]
         elif smaller and not bigger:
@@ -143,3 +138,4 @@ class diskOptimization:
         self.generateSSTF()
         self.generateScan()
         self.generatelook()
+
