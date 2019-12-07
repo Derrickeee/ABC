@@ -79,8 +79,6 @@ class diskOptimization:
         for sublist in order:
             for nextTrack in sublist:
                 scan.append(nextTrack)
-                dist += abs(curr - nextTrack)
-                curr = nextTrack
         return scan
 
 
@@ -111,8 +109,6 @@ class diskOptimization:
         for sublist in order:
             for nextTrack in sublist:
                 look.append(nextTrack)
-                dist += abs(curr - nextTrack)
-                curr = nextTrack
         return look
 
     def arrangeclook(self, curr, seq):
@@ -137,8 +133,6 @@ class diskOptimization:
         for sublist in order:
             for nextTrack in sublist:
                 clook.append(nextTrack)
-                dist += abs(curr - nextTrack)
-                curr = nextTrack
         return clook
 
     def generateFCFS(self):
