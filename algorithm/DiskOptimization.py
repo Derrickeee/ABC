@@ -70,6 +70,7 @@ class diskOptimization:
             if curr > self.dp.getPrevious():
                 order = [bigger, additional, smaller]
             else:
+                additional = [0]
                 order = [smaller, additional, bigger]
         elif bigger and not smaller:
             order = [bigger]
