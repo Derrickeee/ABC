@@ -68,7 +68,7 @@ class diskOptimization:
                 order = [greater, additional, smaller]
             else:
                 additional = [0]
-                order = [smaller, additional, bigger]
+                order = [smaller, additional, greater]
         elif greater and additional and not smaller:
             order = [greater, additional]
         elif smaller and not greater:
