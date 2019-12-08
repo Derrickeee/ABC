@@ -25,6 +25,7 @@ class diskOptimization:
         working1 = working1[0:-1]
         working2 = working2[0:-1]
         #First Come First Served Order
+        #FCFS does not need to be arranged as requests are serviced in the order as they arrived at the device queue.
         order = str(self.dp.getCurrent()) + ", " + str(location)[1:-1]
         print(name + "\n====")
         print("Order of Access: " + order)
@@ -36,11 +37,14 @@ class diskOptimization:
         temp = seq[:]
         sstf = []
         temp2 = temp[:]
+        
 
+        #SSTF chooses the pending request closest to the current head position.
         num = curr
         for i in temp:
             minimum = max(seq)
             num2 = num
+            #calculates the minimum seek time from the current head position
             for ii in temp2:
                 dist = abs(num2 - ii)
                 if dist < minimum:
@@ -94,6 +98,7 @@ class diskOptimization:
         greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
+        #sorts the lists
         greater = sorted(greater)
         smaller = sorted(smaller, reverse=True)
         look = []
@@ -161,7 +166,6 @@ class diskOptimization:
         seq = self.dp.getSequence()
         curr = self.dp.getCurrent()
         self.printSequence("Scan", self.arrangescan(curr, seq))
-
 
     def generatelook(self):
         seq = self.dp.getSequence()
