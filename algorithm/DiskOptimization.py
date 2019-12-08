@@ -51,18 +51,24 @@ class diskOptimization:
         return sstf
 
     def arrangescan(self, curr, seq):
+        #A new list, temp, is created
         temp = seq[:]
+        #splits temp into three separate lists according to condition i.e. if the number is greater than, the same as or smaller than the current value
         greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
+        #reverse sort is applied to the list containing the smaller numbers
         greater = sorted(greater)
         smaller = sorted(smaller, reverse=True)
+        #computes the value of the end
         additional = [self.dp.getCylinders() - 1]
         scan = []
         if identical:
             for track in identical:
                 scan.append(track)
         order = []
+        #adds values to the list
+        #the algorithm goes to the end before reversing direction
         if greater and smaller and additional:
             if curr > self.dp.getPrevious():
                 order = [greater, additional, smaller]
@@ -74,6 +80,7 @@ class diskOptimization:
         elif smaller and not greater:
             additional = [0]
             order = [smaller, additional]
+        #appends the numbers from the list to the order of access
         for sublist in order:
             for nextTrack in sublist:
                 scan.append(nextTrack)
@@ -81,7 +88,9 @@ class diskOptimization:
 
 
     def arrangelook(self, curr, seq):
+        #A new list, temp, is created
         temp = seq[:]
+        #splits temp into three separate lists according to condition
         greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
@@ -104,17 +113,20 @@ class diskOptimization:
             order = [greater]
         elif smaller and not greater:
             order = [smaller]
-            #appends the numbers from the list to the order of access
+        #appends the numbers from the list to the order of access
         for sublist in order:
             for nextTrack in sublist:
                 look.append(nextTrack)
         return look
 
     def arrangeclook(self, curr, seq):
+        #A new list, temp, is created
         temp = seq[:]
+        #splits temp into three separate lists according to condition
         greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
+        #sorts the lists, one containing the numbers greater than the head position and the other containing the numbers smaller than the head position
         greater = sorted(greater)
         smaller = sorted(smaller)
         clook = []
@@ -122,18 +134,20 @@ class diskOptimization:
             for track in identical:
                 clook.append(track)
         order = []
-        #only one direction
+        #only one direction; the list containing the larger values is added first
         if greater and smaller:
             order = [greater, smaller]
         elif greater and not smaller:
             order = [greater]
         elif smaller and not greater:
             order = [smaller]
+        #appends the numbers from the list to the order of access
         for sublist in order:
             for nextTrack in sublist:
                 clook.append(nextTrack)
         return clook
     
+    #prints the sequence
     def generateFCFS(self):
         seq = self.dp.getSequence()
         self.printSequence("FCFS", seq)
