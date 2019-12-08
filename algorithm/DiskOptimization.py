@@ -50,14 +50,12 @@ class diskOptimization:
             sstf.append(num)
         return sstf
 
-
-
     def arrangescan(self, curr, seq):
         temp = seq[:]
-        bigger = [track for track in temp if track > curr]
+        greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
-        bigger = sorted(bigger)
+        greater = sorted(greater)
         smaller = sorted(smaller, reverse=True)
         additional = [self.dp.getCylinders() - 1]
         scan = []
@@ -65,15 +63,15 @@ class diskOptimization:
             for track in identical:
                 scan.append(track)
         order = []
-        if bigger and smaller and additional:
+        if greater and smaller and additional:
             if curr > self.dp.getPrevious():
-                order = [bigger, additional, smaller]
+                order = [greater, additional, smaller]
             else:
                 additional = [0]
                 order = [smaller, additional, bigger]
-        elif bigger and not smaller:
-            order = [bigger, additional]
-        elif smaller and not bigger:
+        elif greater and additional and not smaller:
+            order = [greater, additional]
+        elif smaller and not greater:
             additional = [0]
             order = [smaller, additional]
         for sublist in order:
@@ -84,25 +82,29 @@ class diskOptimization:
 
     def arrangelook(self, curr, seq):
         temp = seq[:]
-        bigger = [track for track in temp if track > curr]
+        greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
-        bigger = sorted(bigger)
+        greater = sorted(greater)
         smaller = sorted(smaller, reverse=True)
         look = []
+        #adds current position to order
         if identical:
             for track in identical:
                 look.append(track)
         order = []
-        if bigger and smaller:
+        if greater and smaller:
+            #the order of access depends on the direction of the disk head movement: from previous request served versus the current request serving
             if curr > self.dp.getPrevious():
-                order = [bigger, smaller]
+                #merges the two lists
+                order = [greater, smaller]
             else:
-                order = [smaller, bigger]
-        elif bigger and not smaller:
-            order = [bigger]
-        elif smaller and not bigger:
+                order = [smaller, greater]
+        elif greater and not smaller:
+            order = [greater]
+        elif smaller and not greater:
             order = [smaller]
+            #appends the numbers from the list to the order of access
         for sublist in order:
             for nextTrack in sublist:
                 look.append(nextTrack)
@@ -110,27 +112,28 @@ class diskOptimization:
 
     def arrangeclook(self, curr, seq):
         temp = seq[:]
-        bigger = [track for track in temp if track > curr]
+        greater = [track for track in temp if track > curr]
         identical = [track for track in temp if track == curr]
         smaller = [track for track in temp if track < curr]
-        bigger = sorted(bigger)
+        greater = sorted(greater)
         smaller = sorted(smaller)
         clook = []
         if identical:
             for track in identical:
                 clook.append(track)
         order = []
-        if bigger and smaller:
-            order = [bigger, smaller]
-        elif bigger and not smaller:
-            order = [bigger]
-        elif smaller and not bigger:
+        #only one direction
+        if greater and smaller:
+            order = [greater, smaller]
+        elif greater and not smaller:
+            order = [greater]
+        elif smaller and not greater:
             order = [smaller]
         for sublist in order:
             for nextTrack in sublist:
                 clook.append(nextTrack)
         return clook
-
+    
     def generateFCFS(self):
         seq = self.dp.getSequence()
         self.printSequence("FCFS", seq)
